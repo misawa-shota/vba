@@ -1,21 +1,10 @@
 Attribute VB_Name = "Module2"
-Sub Macro1()
-Attribute Macro1.VB_ProcData.VB_Invoke_Func = " \n14"
-    ActiveCell.FormulaR1C1 = "=RC[-2]*RC[-1]"
-End Sub
-
-Sub 乱数設置()
-    Dim rStart
-    Dim cStart
+Sub テスト()
+    Dim sum
     
-    rStart = ActiveCell.Row
-    cStart = ActiveCell.Column
+    sum = Range("B2").Value + Range("C2").Value
     
-    Randomize
+    Debug.Print "合計値", sum
     
-    For rCount = 0 To 4
-        For cCount = 0 To 4
-            Cells(rStart + rCount, cStart + cCount).Value = Int(25 * Rnd + 1)
-        Next cCount
-    Next rCount
+    Range("D2").Value = sum
 End Sub
