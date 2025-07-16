@@ -1,10 +1,8 @@
 Attribute VB_Name = "Module2"
-Sub テスト()
-    Dim sum
-    
-    sum = Range("B2").Value + Range("C2").Value
-    
-    Debug.Print "合計値", sum
-    
-    Range("D2").Value = sum
+Sub 計算()
+    Debug.Print " 計算"
+End Sub
+
+Sub グラフ作成()
+    Debug.Print "グラフ作成"
 End Sub
