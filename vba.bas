@@ -1,8 +1,8 @@
 Attribute VB_Name = "Module2"
-Sub è¨ˆç®—()
-    Debug.Print " è¨ˆç®—"
-End Sub
-
-Sub ã‚°ãƒ©ãƒ•ä½œæˆ()
-    Debug.Print "ã‚°ãƒ©ãƒ•ä½œæˆ"
+' ì¬ÒFR“c‘¾˜Y
+' “ú•tF202x”NxxŒxx“ú
+Sub ƒvƒƒV[ƒWƒƒ–¼()
+    Range("A1").Value = 10
+    Range("A2").Value = 20  ' —vŠm”F
+    Range("A3").Value = 30
 End Sub
