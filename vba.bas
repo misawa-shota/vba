@@ -3,26 +3,13 @@ Option Explicit
 Dim num As Integer
 
 
-Sub テスト1()
-    
-    num = 10
-    Debug.Print num
-
-End Sub
-
-Sub テスト2()
-    
-    num = num + 20
-    Debug.Print num
-    
-End Sub
-
-Sub テスト3()
-    
-    Dim num As String
-    
-    num = " 東京都 "
-    Debug.Print num
-    
+Sub テスト()
+  
+	Const TAX As Double = 0.75
+  Dim price As Double
+  
+  price = 150 * TAX
+  Debug.Print price
+  
 End Sub
 
