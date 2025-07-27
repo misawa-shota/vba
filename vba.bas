@@ -5,13 +5,10 @@ Dim num As Integer
 
 Sub テスト()
   
-  Range("B2").Value = " 東京都 " & vbCrLf & " 中央区 "
+  Dim ws As Worksheet
   
-End Sub
-
-Sub メッセージボックス()
-
-  MsgBox " こんにちは " & vbNewLine & " お元気ですか？"
-
+  Set ws = Worksheets("Sheet2")
+  ws.Range("A2").Value = " テスト "
+  
 End Sub
 
