@@ -5,10 +5,13 @@ Dim num As Integer
 
 Sub テスト()
   
-  Dim ws As Worksheet
-  
-  Set ws = Worksheets("Sheet2")
-  ws.Range("A2").Value = " テスト "
+  Range("A1").Font.ColorIndex = 3
   
 End Sub
 
+
+Sub 削除()
+
+  Range("A1").Delete
+
+End Sub
