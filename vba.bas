@@ -5,13 +5,9 @@ Dim num As Integer
 
 Sub ƒeƒXƒg()
   
-  Range("A1").Font.ColorIndex = 3
+  Dim r As Range
+  
+  Set r = Range("A2")
   
 End Sub
 
-
-Sub íœ()
-
-  Range("A1").Delete
-
-End Sub
