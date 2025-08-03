@@ -18,9 +18,37 @@ Sub テスト()
     For Each ws In ThisWorkbook.Worksheets
       ws.Select
       Select Case ws.Name
-        Case "グラフ", "写真", "計算用シート（始まり）", "計算用シート（終わり）"
+        Case "写真"
           ' 処理対象外なので、処理なし
           
+        Case "グラフ"
+        ' グラフシートに新しい項目を追加する処理
+        Dim graphSheet As Worksheet
+        Set graphSheet = Worksheets("グラフ")
+
+        Dim n As Long
+        For n = 1 To 100
+
+          If IsEmpty(graphSheet.Cells(6, n).Value) Then
+            graphSheet.Cells(6, n).Value = newTitle
+            graphSheet.Range(Cells(7, n - 1), Cells(7, n - 1)).AutoFill Destination:=graphSheet.Range(Cells(7, n - 1), Cells(7, n)), Type:=xlFillDefault
+
+            graphSheet.Cells(6, n).Borders(xlEdgeTop).Weight = xlThin
+            graphSheet.Cells(6, n).Borders(xlEdgeRight).Weight = xlThin
+            graphSheet.Cells(6, n).Borders(xlEdgeBottom).LineStyle = xlDouble
+
+            graphSheet.Cells(6, n).HorizontalAlignment = xlCenter
+            graphSheet.Cells(6, n).VerticalAlignment = xlCenter
+
+            Dim stringLength As Integer
+            stringLength = Len(newTitle)
+            If stringLength > 7 Then
+              graphSheet.Columns(n).AutoFit
+            End If
+            Exit For
+          End If
+        Next n
+            
         Case Else
           ' 商品のシートにのみ以下の処理を実行
           Dim i As Long
@@ -60,8 +88,12 @@ Sub テスト()
           Next i
       End Select
     Next ws
+    
+    
+    
+    
+    
   End If
-  
 End Sub
 
   Sub ワークシート取得()
@@ -83,7 +115,5 @@ End Sub
     Next ws
     
   End Sub
-
-  
 
 
