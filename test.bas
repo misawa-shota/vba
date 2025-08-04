@@ -19,8 +19,8 @@ Sub テスト()
       ws.Select
       Select Case ws.Name
         Case "写真"
-          ' 処理対象外なので、処理なし
-          
+           ' 処理対象外なので、処理なし
+           
         Case "グラフ"
         ' グラフシートに新しい項目を追加する処理
         Dim graphSheet As Worksheet
@@ -48,7 +48,7 @@ Sub テスト()
             Exit For
           End If
         Next n
-            
+             
         Case Else
           ' 商品のシートにのみ以下の処理を実行
           Dim i As Long
@@ -79,7 +79,7 @@ Sub テスト()
                 Columns(i).AutoFit
               End If
               
-              ' 新規追加した列のデータ入力範囲内のデータを空にする処理（オートフィルで隣のデータをコピーするため）
+               ' 新規追加した列のデータ入力範囲内のデータを空にする処理（オートフィルで隣のデータをコピーするため）
               Range(Cells(8, i), Cells(35, i)).Value = ""
               
               Exit For
@@ -96,24 +96,59 @@ Sub テスト()
   End If
 End Sub
 
-  Sub ワークシート取得()
+  Sub グラフ作成()
   
-    Dim ws As Worksheet
+    Dim chartSheet As Worksheet
+    Set chartSheet = Worksheets("グラフ")
     
-    For Each ws In ThisWorkbook.Worksheets
-      Select Case ws.Name
-        Case "グラフ", "写真", "計算用シート（始まり）", "計算用シート（終わり）"
-        
-        Case Else
-          Dim i As Long
-          For i = 1 To 6
-            If IsEmpty(Cells(3, i)) Then
-              ws.Cells(3, i) = " テスト "
-            End If
-          Next i
-        End Select
-    Next ws
+    Dim chart As chart
+    Set chart = ActiveChart
+    
+    With chartSheet.Shapes.AddChart2.chart
+      .HasTitle = True
+      .ChartTitle.Text = "異物の種類と発生件数"
+      .ChartType = xlColumnClustered
+      .SetSourceData Range(Cells(6, "B"), Cells(7, "K"))
+      
+      With .Axes(xlValue)
+            .HasTitle = True
+            .AxisTitle.Text = "発生件数"
+      End With
+    End With
     
   End Sub
 
+Sub 軸ﾗﾍﾞﾙの設()
+'
+' 軸ラベルの設定 Macro
+'
 
+'
+    Range("B6:K7").Select
+    ActiveSheet.Shapes.AddChart2(201, xlColumnClustered).Select
+    ActiveChart.SetSourceData Source:=Range("グラフ!$B$6:$K$7")
+    ActiveChart.SetElement (msoElementPrimaryValueAxisTitleAdjacentToAxis)
+    ActiveChart.Axes(xlValue, xlPrimary).AxisTitle.Text = "発生件数"
+    Selection.Format.TextFrame2.TextRange.Characters.Text = "発生件数"
+    With Selection.Format.TextFrame2.TextRange.Characters(1, 4).ParagraphFormat
+      .TextDirection = msoTextDirectionLeftToRight
+      .Alignment = msoAlignCenter
+    End With
+    With Selection.Format.TextFrame2.TextRange.Characters(1, 4).Font
+      .BaselineOffset = 0
+      .Bold = msoFalse
+      .NameComplexScript = "+mn-cs"
+      .NameFarEast = "+mn-ea"
+      .Fill.Visible = msoTrue
+      .Fill.ForeColor.RGB = RGB(89, 89, 89)
+      .Fill.Transparency = 0
+      .Fill.Solid
+      .Size = 10
+      .Italic = msoFalse
+      .Kerning = 12
+      .Name = "+mn-lt"
+      .UnderlineStyle = msoNoUnderline
+      .Strike = msoNoStrike
+    End With
+    ActiveChart.ChartArea.Select
+End Sub
