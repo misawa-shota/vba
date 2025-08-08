@@ -19,12 +19,21 @@ Sub テスト()
       ws.Select
       Select Case ws.Name
         Case "写真"
-           ' 処理対象外なので、処理なし
-           
+          ' 処理対象外なので、処理なし
+          
         Case "グラフ"
         ' グラフシートに新しい項目を追加する処理
         Dim graphSheet As Worksheet
         Set graphSheet = Worksheets("グラフ")
+        
+        ' 既存の「異物の種類と発生件数」のグラフを削除
+        Dim chartObj As ChartObject
+        For Each chartObj In graphSheet.ChartObjects
+          chartObj.Select
+          If chartObj.chart.chartTitle.Text = "異物の種類と発生件数" Then
+            chartObj.Delete
+          End If
+        Next
 
         Dim n As Long
         For n = 1 To 100
@@ -45,10 +54,39 @@ Sub テスト()
             If stringLength > 7 Then
               graphSheet.Columns(n).AutoFit
             End If
+            
+            ' 異物の種類と発生件数のグラフを自動作成
+            ' 新たに「異物の種類と発生件数」のグラフを作成
+            With graphSheet.Shapes.AddChart2.chart
+              .HasTitle = True
+              .chartTitle.Text = "異物の種類と発生件数"
+              .ChartType = xlColumnClustered
+              .SetSourceData Range(Cells(6, "B"), Cells(7, n))
+              
+              ' 縦軸のラベルを表示
+              With .Axes(xlValue)
+                    .HasTitle = True
+                    .AxisTitle.Text = "発生件数"
+                    .AxisTitle.Orientation = xlVertical
+              End With
+              
+              ' 横軸のラベル名を水平に設定
+              With .Axes(xlCategory)
+                    .TickLabels.Orientation = xlHorizontal
+              End With
+              
+              ' グラフの表示位置とサイズの設定
+              With ActiveSheet.ChartObjects
+                    .Top = Range("A10").Top
+                    .Left = Range("A10").Left
+                    .Height = 300
+                    .Width = 1000
+              End With
+            End With
             Exit For
           End If
         Next n
-             
+            
         Case Else
           ' 商品のシートにのみ以下の処理を実行
           Dim i As Long
@@ -79,7 +117,7 @@ Sub テスト()
                 Columns(i).AutoFit
               End If
               
-               ' 新規追加した列のデータ入力範囲内のデータを空にする処理（オートフィルで隣のデータをコピーするため）
+              ' 新規追加した列のデータ入力範囲内のデータを空にする処理（オートフィルで隣のデータをコピーするため）
               Range(Cells(8, i), Cells(35, i)).Value = ""
               
               Exit For
@@ -88,55 +126,7 @@ Sub テスト()
           Next i
       End Select
     Next ws
-    
-    
-    
-    
-    
   End If
 End Sub
 
-  Sub グラフ作成()
   
-    ' シート名「グラフ」のシートを変数に設定
-    Dim chartSheet As Worksheet
-    Set chartSheet = Worksheets("グラフ")
-    
-    ' 既存の「異物の種類と発生件数」のグラフを削除
-    Dim cho As ChartObject
-    For Each cho In chartSheet.ChartObjects
-      cho.Select
-      If cho.chart.chartTitle.Text = "異物の種類と発生件数" Then
-        cho.Delete
-      End If
-    Next
-    
-    ' 新たに「異物の種類と発生件数」のグラフを作成
-    With chartSheet.Shapes.AddChart2.chart
-      .HasTitle = True
-      .chartTitle.Text = "異物の種類と発生件数"
-      .ChartType = xlColumnClustered
-      .SetSourceData Range(Cells(6, "B"), Cells(7, "K"))
-      
-      ' 縦軸のラベルを表示
-      With .Axes(xlValue)
-            .HasTitle = True
-            .AxisTitle.Text = "発生件数"
-            .AxisTitle.Orientation = xlVertical
-      End With
-      
-      ' 横軸のラベル名を水平に設定
-      With .Axes(xlCategory)
-            .TickLabels.Orientation = xlHorizontal
-      End With
-      
-      With ActiveSheet.ChartObjects
-            .Top = Range("A10").Top
-            .Left = Range("A10").Left
-            .Height = 300
-            .Width = 1000
-      End With
-    End With
-    
-  End Sub
-
