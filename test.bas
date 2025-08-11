@@ -17,7 +17,7 @@ Sub テスト()
     
     For Each ws In ThisWorkbook.Worksheets
       ws.Select
-      Select Case ws.Name
+      Select Case ws.name
         Case "写真"
           ' 処理対象外なので、処理なし
           
@@ -129,4 +129,64 @@ Sub テスト()
   End If
 End Sub
 
+
+Sub セル値_配列に追加()
+
+  Dim targetRange As Range
+  Dim arr() As Variant '動的配列を宣言
+  Dim i As Long, j As Long
+  Dim lastRow As Long, lastCol As Long
+
+  ' 配列に追加する範囲を指定
+  Set targetRange = ThisWorkbook.Sheets("グラフ").Range("A1:C10") ' 例: Sheet1のA1からC10
+
+  ' 配列のサイズを決定
+  lastRow = targetRange.Rows.Count
+  lastCol = targetRange.Columns.Count
+  ReDim arr(1 To lastRow, 1 To lastCol)
+
+  ' セル値を配列に格納
+  For i = 1 To lastRow
+    For j = 1 To lastCol
+      arr(i, j) = targetRange.Cells(i, j).Value
+    Next j
+  Next i
+
+  ' ここで配列arrを使用
+  ' 例: 配列の内容をメッセージボックスに表示
+  Dim output As String
+  For i = 1 To lastRow
+      For j = 1 To lastCol
+          output = output & arr(i, j) & vbTab
+      Next j
+      output = output & vbNewLine
+  Next i
+  MsgBox output
+
+End Sub
+
+
+Sub 項目を配列に追加()
+
+  Dim arr() As Variant
+  Dim i As Long
   
+  ReDim arr(6, 2 To 100)
+  
+  For i = 2 To 100
+    If IsEmpty(Cells(6, i).Value) Then
+      Exit For
+    End If
+    arr(6, i) = Cells(6, i).Value
+  Next i
+  
+  Dim output As String
+  For i = 1 To lastRow
+      For j = 1 To lastCol
+          output = output & arr(i, j) & vbTab
+      Next j
+      output = output & vbNewLine
+  Next i
+  MsgBox output
+
+End Sub
