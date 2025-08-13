@@ -19,8 +19,8 @@ Sub テスト()
       ws.Select
       Select Case ws.name
         Case "写真"
-          ' 処理対象外なので、処理なし
-          
+           ' 処理対象外なので、処理なし
+           
         Case "グラフ"
         ' グラフシートに新しい項目を追加する処理
         Dim graphSheet As Worksheet
@@ -40,7 +40,7 @@ Sub テスト()
 
           If IsEmpty(graphSheet.Cells(6, n).Value) Then
             graphSheet.Cells(6, n).Value = newTitle
-            graphSheet.Range(Cells(7, n - 1), Cells(7, n - 1)).AutoFill Destination:=graphSheet.Range(Cells(7, n - 1), Cells(7, n)), Type:=xlFillDefault
+            graphSheet.range(Cells(7, n - 1), Cells(7, n - 1)).AutoFill Destination:=graphSheet.range(Cells(7, n - 1), Cells(7, n)), Type:=xlFillDefault
 
             graphSheet.Cells(6, n).Borders(xlEdgeTop).Weight = xlThin
             graphSheet.Cells(6, n).Borders(xlEdgeRight).Weight = xlThin
@@ -61,7 +61,7 @@ Sub テスト()
               .HasTitle = True
               .chartTitle.Text = "異物の種類と発生件数"
               .ChartType = xlColumnClustered
-              .SetSourceData Range(Cells(6, "B"), Cells(7, n))
+              .SetSourceData range(Cells(6, "B"), Cells(7, n))
               
               ' 縦軸のラベルを表示
               With .Axes(xlValue)
@@ -77,8 +77,8 @@ Sub テスト()
               
               ' グラフの表示位置とサイズの設定
               With ActiveSheet.ChartObjects
-                    .Top = Range("A10").Top
-                    .Left = Range("A10").Left
+                    .Top = range("A10").Top
+                    .Left = range("A10").Left
                     .Height = 300
                     .Width = 1000
               End With
@@ -86,7 +86,7 @@ Sub テスト()
             Exit For
           End If
         Next n
-            
+             
         Case Else
           ' 商品のシートにのみ以下の処理を実行
           Dim i As Long
@@ -97,10 +97,10 @@ Sub テスト()
             
               '  新規項目の列を追加する処理
               Cells(6, i).Value = newTitle
-              Range(Cells(7, i - 1), Cells(35, i - 1)).AutoFill Destination:=Range(Cells(7, i - 1), Cells(35, i)), Type:=xlFillDefault
+              range(Cells(7, i - 1), Cells(35, i - 1)).AutoFill Destination:=range(Cells(7, i - 1), Cells(35, i)), Type:=xlFillDefault
               
               '  テーブルの枠線の指定
-              Range(Cells(7, i), Cells(35, i)).Borders(xlEdgeLeft).Weight = xlThin
+              range(Cells(7, i), Cells(35, i)).Borders(xlEdgeLeft).Weight = xlThin
               Cells(6, i).Borders(xlEdgeTop).Weight = xlMedium
               Cells(6, i).Borders(xlEdgeRight).Weight = xlMedium
               Cells(6, i).Borders(xlEdgeLeft).Weight = xlThin
@@ -117,8 +117,8 @@ Sub テスト()
                 Columns(i).AutoFit
               End If
               
-              ' 新規追加した列のデータ入力範囲内のデータを空にする処理（オートフィルで隣のデータをコピーするため）
-              Range(Cells(8, i), Cells(35, i)).Value = ""
+               ' 新規追加した列のデータ入力範囲内のデータを空にする処理（オートフィルで隣のデータをコピーするため）
+              range(Cells(8, i), Cells(35, i)).Value = ""
               
               Exit For
             End If
@@ -132,13 +132,13 @@ End Sub
 
 Sub セル値_配列に追加()
 
-  Dim targetRange As Range
+  Dim targetRange As range
   Dim arr() As Variant '動的配列を宣言
   Dim i As Long, j As Long
   Dim lastRow As Long, lastCol As Long
 
   ' 配列に追加する範囲を指定
-  Set targetRange = ThisWorkbook.Sheets("グラフ").Range("A1:C10") ' 例: Sheet1のA1からC10
+  Set targetRange = ThisWorkbook.Sheets("グラフ").range("A1:C10") ' 例: Sheet1のA1からC10
 
   ' 配列のサイズを決定
   lastRow = targetRange.Rows.Count
@@ -168,25 +168,14 @@ End Sub
 
 Sub 項目を配列に追加()
 
-  Dim arr() As Variant
-  Dim i As Long
+  Dim range As range
+  Dim cell As range
   
-  ReDim arr(6, 2 To 100)
+  Set range = ActiveSheet.range(Cells(6, 2), Cells(6, 100))
+  Set range = range.SpecialCells(xlCellTypeConstants)
   
-  For i = 2 To 100
-    If IsEmpty(Cells(6, i).Value) Then
-      Exit For
-    End If
-    arr(6, i) = Cells(6, i).Value
-  Next i
+  For Each cell In range
+    Debug.Print cell.Address, cell.Value
+  Next cell
   
-  Dim output As String
-  For i = 1 To lastRow
-      For j = 1 To lastCol
-          output = output & arr(i, j) & vbTab
-      Next j
-      output = output & vbNewLine
-  Next i
-  MsgBox output
-
 End Sub
