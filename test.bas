@@ -18,7 +18,7 @@ Sub テスト()
     For Each ws In ThisWorkbook.Worksheets
       ws.Select
       Select Case ws.name
-        Case "写真"
+        Case "写真", "コマンドボタン"
            ' 処理対象外なので、処理なし
            
         Case "グラフ"
@@ -130,52 +130,28 @@ Sub テスト()
 End Sub
 
 
-Sub セル値_配列に追加()
-
-  Dim targetRange As range
-  Dim arr() As Variant '動的配列を宣言
-  Dim i As Long, j As Long
-  Dim lastRow As Long, lastCol As Long
-
-  ' 配列に追加する範囲を指定
-  Set targetRange = ThisWorkbook.Sheets("グラフ").range("A1:C10") ' 例: Sheet1のA1からC10
-
-  ' 配列のサイズを決定
-  lastRow = targetRange.Rows.Count
-  lastCol = targetRange.Columns.Count
-  ReDim arr(1 To lastRow, 1 To lastCol)
-
-  ' セル値を配列に格納
-  For i = 1 To lastRow
-    For j = 1 To lastCol
-      arr(i, j) = targetRange.Cells(i, j).Value
-    Next j
-  Next i
-
-  ' ここで配列arrを使用
-  ' 例: 配列の内容をメッセージボックスに表示
-  Dim output As String
-  For i = 1 To lastRow
-      For j = 1 To lastCol
-          output = output & arr(i, j) & vbTab
-      Next j
-      output = output & vbNewLine
-  Next i
-  MsgBox output
-
-End Sub
 
 
 Sub 項目を配列に追加()
 
   Dim range As range
   Dim cell As range
-  
-  Set range = ActiveSheet.range(Cells(6, 2), Cells(6, 100))
+  Dim chartSheet As Worksheet
+
+  Set chartSheet = Worksheets("グラフ")
+  chartSheet.Activate
+  Set range = chartSheet.range(Cells(6, 2), Cells(6, 100))
   Set range = range.SpecialCells(xlCellTypeConstants)
   
   For Each cell In range
-    Debug.Print cell.Address, cell.Value
+    UserForm1.ComboBox1.AddItem (cell.Value)
   Next cell
   
+  UserForm1.Show
+  
 End Sub
+
+
+
+
+
